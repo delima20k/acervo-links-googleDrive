@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#071a33">
+  <meta name="description" content="Acervo Lumeo — links organizados de livros digitais e histórias em quadrinhos.">
+  <title>Acervo | Lumeo</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --navy: #071a33;
+      --navy-deep: #041225;
+      --panel: #0d2748;
+      --panel-hover: #12345c;
+      --line: rgba(174, 207, 241, .16);
+      --text: #f3f7fc;
+      --muted: #a9bdd4;
+      --accent: #69c7ed;
+      --accent-strong: #a3e4ff;
+      --success: #79dfb1;
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(ellipse at 50% -15%, rgba(42, 111, 168, .27), transparent 48%),
+        linear-gradient(180deg, var(--navy) 0%, var(--navy-deep) 100%);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+    }
+
+    .page {
+      width: min(100% - 36px, 960px);
+      margin: 0 auto;
+      padding: 68px 0 36px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 42px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 12px;
+      color: var(--accent-strong);
+      font-size: .76rem;
+      font-weight: 800;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(3.7rem, 12vw, 7.2rem);
+      line-height: .98;
+      font-weight: 900;
+      letter-spacing: .055em;
+      text-transform: uppercase;
+      color: #fff;
+      text-shadow: 0 10px 35px rgba(0, 0, 0, .28);
+    }
+
+    .intro {
+      max-width: 610px;
+      margin: 20px auto 0;
+      color: var(--muted);
+      font-size: 1.03rem;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      margin: 42px 0 17px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      letter-spacing: .015em;
+    }
+
+    .section-heading::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: var(--line);
+    }
+
+    .section-note {
+      margin: -8px 0 18px;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .items {
+      display: grid;
+      gap: 11px;
+    }
+
+    .item {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 14px;
+      padding: 15px 16px 15px 19px;
+      background: linear-gradient(115deg, rgba(17, 48, 81, .96), rgba(10, 35, 64, .96));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      transition: border-color .18s ease, transform .18s ease, background .18s ease;
+    }
+
+    .item:hover {
+      border-color: rgba(105, 199, 237, .45);
+      background: linear-gradient(115deg, #12345c, #0c2b4d);
+      transform: translateY(-1px);
+    }
+
+    .item-info { min-width: 0; }
+
+    .item-name {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--text);
+      font-size: 1rem;
+      font-weight: 750;
+    }
+
+    .item-link {
+      display: inline-block;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+      color: var(--accent-strong);
+      font-size: .88rem;
+      text-decoration: underline;
+      text-decoration-color: rgba(163, 228, 255, .45);
+      text-underline-offset: 3px;
+    }
+
+    .item-link:hover { color: #fff; }
+
+    .copy-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-width: 44px;
+      min-height: 42px;
+      padding: 9px 12px;
+      border: 1px solid rgba(163, 228, 255, .27);
+      border-radius: 11px;
+      background: rgba(105, 199, 237, .09);
+      color: var(--accent-strong);
+      font: inherit;
+      font-size: .83rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .18s ease, border-color .18s ease, color .18s ease;
+    }
+
+    .copy-button:hover {
+      background: rgba(105, 199, 237, .18);
+      border-color: rgba(163, 228, 255, .55);
+    }
+
+    .copy-button:focus-visible,
+    .item-link:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .copy-button svg {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .copy-button.copied {
+      color: var(--success);
+      border-color: rgba(121, 223, 177, .45);
+      background: rgba(121, 223, 177, .1);
+    }
+
+    .thanks {
+      margin-top: 48px;
+      padding: 30px 24px;
+      text-align: center;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(18, 52, 92, .78), rgba(8, 29, 54, .9));
+    }
+
+    .thanks h2 {
+      margin: 0 0 8px;
+      color: var(--accent-strong);
+      font-size: 1.35rem;
+    }
+
+    .thanks p {
+      max-width: 620px;
+      margin: 0 auto;
+      color: var(--muted);
+    }
+
+    footer {
+      padding: 24px 0 0;
+      color: rgba(169, 189, 212, .65);
+      text-align: center;
+      font-size: .78rem;
+      letter-spacing: .08em;
+    }
+
+    @media (max-width: 560px) {
+      .page { width: min(100% - 24px, 960px); padding-top: 48px; }
+      header { margin-bottom: 30px; }
+      .item { padding: 13px; gap: 9px; }
+      .item-link { font-size: .78rem; }
+      .copy-button { min-width: 42px; padding: 9px; }
+      .copy-label { display: none; }
+      .section-heading { margin-top: 34px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <span class="eyebrow">Lumeo · Leia · Evolua · Transforme</span>
+      <h1>Acervo</h1>
+      <p class="intro">Uma coleção organizada para facilitar seu acesso. Escolha uma categoria, abra a pasta no Google Drive ou copie o endereço com o botão ao lado.</p>
+    </header>
+
+    <section aria-labelledby="livros-title">
+      <div class="section-heading">
+        <h2 id="livros-title">Acervo de livros</h2>
+      </div>
+      <p class="section-note">28 gêneros de livros digitais e um bônus especial em áudio.</p>
+      <div class="items">
+        <article class="item"><div class="item-info"><span class="item-name">Administração e economia</span><a class="item-link" href="https://drive.google.com/drive/folders/10bXreEgmEAQGwjKW7-lnnIX92YZ9VcNj" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/10bXreEgmEAQGwjKW7-lnnIX92YZ9VcNj</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/10bXreEgmEAQGwjKW7-lnnIX92YZ9VcNj" aria-label="Copiar link de Administração e economia"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Artes e música</span><a class="item-link" href="https://drive.google.com/drive/folders/1Yc2qLF5v5j163qtkqK0pnwKxL-uERNF0" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1Yc2qLF5v5j163qtkqK0pnwKxL-uERNF0</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1Yc2qLF5v5j163qtkqK0pnwKxL-uERNF0" aria-label="Copiar link de Artes e música"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Autoajuda</span><a class="item-link" href="https://drive.google.com/drive/folders/1Pqu3DcMJT8wTwC7pFX7e20Z9fPUDJBoZ" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1Pqu3DcMJT8wTwC7pFX7e20Z9fPUDJBoZ</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1Pqu3DcMJT8wTwC7pFX7e20Z9fPUDJBoZ" aria-label="Copiar link de Autoajuda"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Aventura</span><a class="item-link" href="https://drive.google.com/drive/folders/1D-qr4sz_TKbN2Niyc_1tEWntXNe_sTdY" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1D-qr4sz_TKbN2Niyc_1tEWntXNe_sTdY</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1D-qr4sz_TKbN2Niyc_1tEWntXNe_sTdY" aria-label="Copiar link de Aventura"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Biografia e memórias</span><a class="item-link" href="https://drive.google.com/drive/folders/1vNg2upKWB05bncYQxEgU-NwoFz-IMxvd" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1vNg2upKWB05bncYQxEgU-NwoFz-IMxvd</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1vNg2upKWB05bncYQxEgU-NwoFz-IMxvd" aria-label="Copiar link de Biografia e memórias"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Ciências</span><a class="item-link" href="https://drive.google.com/drive/folders/1c7SjN6VWKXxZtLJT37VqQ9znRwKziBxM" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1c7SjN6VWKXxZtLJT37VqQ9znRwKziBxM</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1c7SjN6VWKXxZtLJT37VqQ9znRwKziBxM" aria-label="Copiar link de Ciências"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Concurso público</span><a class="item-link" href="https://drive.google.com/drive/folders/1OD1Ec1EKFBw3WLrdArAyO_f5SLJcRogQ" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1OD1Ec1EKFBw3WLrdArAyO_f5SLJcRogQ</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1OD1Ec1EKFBw3WLrdArAyO_f5SLJcRogQ" aria-label="Copiar link de Concurso público"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Contos e crônicas</span><a class="item-link" href="https://drive.google.com/drive/folders/1UyRzozIiHQScxnd311QlGFOG4W04ZYtG" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1UyRzozIiHQScxnd311QlGFOG4W04ZYtG</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1UyRzozIiHQScxnd311QlGFOG4W04ZYtG" aria-label="Copiar link de Contos e crônicas"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Desenvolvimento pessoal</span><a class="item-link" href="https://drive.google.com/drive/folders/1DAiKsBMy3BgScLH8fsbBAXdXW1rW1pCm" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1DAiKsBMy3BgScLH8fsbBAXdXW1rW1pCm</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1DAiKsBMy3BgScLH8fsbBAXdXW1rW1pCm" aria-label="Copiar link de Desenvolvimento pessoal"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Turismo e guia de viagem</span><a class="item-link" href="https://drive.google.com/drive/folders/1QYs_64VSDXg6RVMx7zjGA-Sp0c1Pvbrk" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1QYs_64VSDXg6RVMx7zjGA-Sp0c1Pvbrk</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1QYs_64VSDXg6RVMx7zjGA-Sp0c1Pvbrk" aria-label="Copiar link de Turismo e guia de viagem"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Concursos</span><a class="item-link" href="https://drive.google.com/drive/folders/1IAQHYX0p3uugi5QsVVL-DrxXFqmy2w-W" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1IAQHYX0p3uugi5QsVVL-DrxXFqmy2w-W</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1IAQHYX0p3uugi5QsVVL-DrxXFqmy2w-W" aria-label="Copiar link de Concursos"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Espiritualidade</span><a class="item-link" href="https://drive.google.com/drive/folders/1mBKcoS7J8L77d_Xqgmmn2lqQFvoAbGbQ" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1mBKcoS7J8L77d_Xqgmmn2lqQFvoAbGbQ</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1mBKcoS7J8L77d_Xqgmmn2lqQFvoAbGbQ" aria-label="Copiar link de Espiritualidade"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Esportes e jogos</span><a class="item-link" href="https://drive.google.com/drive/folders/1w6n4D7dVw_nTe6oP_g7fnWV_MJtzlcWF" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1w6n4D7dVw_nTe6oP_g7fnWV_MJtzlcWF</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1w6n4D7dVw_nTe6oP_g7fnWV_MJtzlcWF" aria-label="Copiar link de Esportes e jogos"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Ficção</span><a class="item-link" href="https://drive.google.com/drive/folders/1p8HHJ1WSPhPrcxwUpK02eRSudw-tjcuF" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1p8HHJ1WSPhPrcxwUpK02eRSudw-tjcuF</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1p8HHJ1WSPhPrcxwUpK02eRSudw-tjcuF" aria-label="Copiar link de Ficção"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Ficção científica</span><a class="item-link" href="https://drive.google.com/drive/folders/1ND_jjf9daAU7rrsNmrLCD2PcQ741kx3z" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1ND_jjf9daAU7rrsNmrLCD2PcQ741kx3z</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1ND_jjf9daAU7rrsNmrLCD2PcQ741kx3z" aria-label="Copiar link de Ficção científica"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Ficção fantástica</span><a class="item-link" href="https://drive.google.com/drive/folders/1yWNgVAUp3QhnX9SWyqCDxxHngietveCu" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1yWNgVAUp3QhnX9SWyqCDxxHngietveCu</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1yWNgVAUp3QhnX9SWyqCDxxHngietveCu" aria-label="Copiar link de Ficção fantástica"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Filosofia</span><a class="item-link" href="https://drive.google.com/drive/folders/1HT4W1M85WQpl1qg_iQbz23wWKuGgcZ3T" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1HT4W1M85WQpl1qg_iQbz23wWKuGgcZ3T</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1HT4W1M85WQpl1qg_iQbz23wWKuGgcZ3T" aria-label="Copiar link de Filosofia"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Gastronomia</span><a class="item-link" href="https://drive.google.com/drive/folders/1y8Nvr8qEKWihA-Cd1vb9CukK3ZufLJ9j" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1y8Nvr8qEKWihA-Cd1vb9CukK3ZufLJ9j</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1y8Nvr8qEKWihA-Cd1vb9CukK3ZufLJ9j" aria-label="Copiar link de Gastronomia"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">História</span><a class="item-link" href="https://drive.google.com/drive/folders/1gnrzCu4MZmBB5qCoj-szNH7vMzT5Kt0o" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1gnrzCu4MZmBB5qCoj-szNH7vMzT5Kt0o</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1gnrzCu4MZmBB5qCoj-szNH7vMzT5Kt0o" aria-label="Copiar link de História"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Humanas e sociais</span><a class="item-link" href="https://drive.google.com/drive/folders/1_Ytm14mjIYAvUOz8Z7yFTs63vSNxu3ge" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1_Ytm14mjIYAvUOz8Z7yFTs63vSNxu3ge</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1_Ytm14mjIYAvUOz8Z7yFTs63vSNxu3ge" aria-label="Copiar link de Humanas e sociais"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Humor</span><a class="item-link" href="https://drive.google.com/drive/folders/1v3r4_oFryxk6n8AE3QcAUgCaE6M7WSrr" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1v3r4_oFryxk6n8AE3QcAUgCaE6M7WSrr</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1v3r4_oFryxk6n8AE3QcAUgCaE6M7WSrr" aria-label="Copiar link de Humor"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Infantojuvenil</span><a class="item-link" href="https://drive.google.com/drive/folders/1KN3FRQTD8GJy4IoAJDKL_PZ5VvSRR7YF" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1KN3FRQTD8GJy4IoAJDKL_PZ5VvSRR7YF</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1KN3FRQTD8GJy4IoAJDKL_PZ5VvSRR7YF" aria-label="Copiar link de Infantojuvenil"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Nutrição e dietas</span><a class="item-link" href="https://drive.google.com/drive/folders/1PLSZ8uIzH9AaMjoOURFGxPNYW5R06v-w" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1PLSZ8uIzH9AaMjoOURFGxPNYW5R06v-w</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1PLSZ8uIzH9AaMjoOURFGxPNYW5R06v-w" aria-label="Copiar link de Nutrição e dietas"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Poemas e poesias</span><a class="item-link" href="https://drive.google.com/drive/folders/1QSL-5gkj_toi6eVSukmy1UvX462z9Yqm" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1QSL-5gkj_toi6eVSukmy1UvX462z9Yqm</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1QSL-5gkj_toi6eVSukmy1UvX462z9Yqm" aria-label="Copiar link de Poemas e poesias"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Romance</span><a class="item-link" href="https://drive.google.com/drive/folders/1PKriAvamMuqQ6q20KsvY5idrofIViQ7n" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1PKriAvamMuqQ6q20KsvY5idrofIViQ7n</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1PKriAvamMuqQ6q20KsvY5idrofIViQ7n" aria-label="Copiar link de Romance"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Informática</span><a class="item-link" href="https://drive.google.com/drive/folders/1QhKtPzQAvWaL-afcFODegsDgdYR3-Y-X" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1QhKtPzQAvWaL-afcFODegsDgdYR3-Y-X</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1QhKtPzQAvWaL-afcFODegsDgdYR3-Y-X" aria-label="Copiar link de Informática"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Policial</span><a class="item-link" href="https://drive.google.com/drive/folders/1_lXTf4YbhAmHr9LcqOFPdXGKTHc5VXAa" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1_lXTf4YbhAmHr9LcqOFPdXGKTHc5VXAa</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1_lXTf4YbhAmHr9LcqOFPdXGKTHc5VXAa" aria-label="Copiar link de Policial"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Psicologia</span><a class="item-link" href="https://drive.google.com/drive/folders/1viX4qAg4BSXmHwGlYzMDD-4zt4YJLXM0" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1viX4qAg4BSXmHwGlYzMDD-4zt4YJLXM0</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1viX4qAg4BSXmHwGlYzMDD-4zt4YJLXM0" aria-label="Copiar link de Psicologia"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Curso de desenvolvimento pessoal — bônus MP3</span><a class="item-link" href="https://drive.google.com/drive/folders/1ZuGynoaQakyP8EOrkGkhzZgC3sG6Jvz7" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1ZuGynoaQakyP8EOrkGkhzZgC3sG6Jvz7</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1ZuGynoaQakyP8EOrkGkhzZgC3sG6Jvz7" aria-label="Copiar link do bônus em áudio"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+      </div>
+    </section>
+
+    <section aria-labelledby="hqs-title">
+      <div class="section-heading">
+        <h2 id="hqs-title">Acervo de histórias em quadrinhos</h2>
+      </div>
+      <p class="section-note">Coleções Marvel e DC organizadas em cinco pastas.</p>
+      <div class="items">
+        <article class="item"><div class="item-info"><span class="item-name">Marvel 01 — Sagas e grandes eventos</span><a class="item-link" href="https://drive.google.com/drive/folders/1wXs64lZ0nOBAAWwGutDHfjO-TnfYO6Ee?usp=drive_link" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1wXs64lZ0nOBAAWwGutDHfjO-TnfYO6Ee?usp=drive_link</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1wXs64lZ0nOBAAWwGutDHfjO-TnfYO6Ee?usp=drive_link" aria-label="Copiar link de Marvel 01"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Marvel 02 — Personagens e séries</span><a class="item-link" href="https://drive.google.com/drive/folders/1s4EOXNu4ryLbPJwiofmhQKNa8HmVMZpC?usp=drive_link" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1s4EOXNu4ryLbPJwiofmhQKNa8HmVMZpC?usp=drive_link</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1s4EOXNu4ryLbPJwiofmhQKNa8HmVMZpC?usp=drive_link" aria-label="Copiar link de Marvel 02"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">Marvel 03 — X-Men e histórias dos mutantes</span><a class="item-link" href="https://drive.google.com/drive/folders/1e2hE8AA-7eJbVTi8GnJHRSjTfKU1M3Mf?hl=pt-br" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1e2hE8AA-7eJbVTi8GnJHRSjTfKU1M3Mf?hl=pt-br</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1e2hE8AA-7eJbVTi8GnJHRSjTfKU1M3Mf?hl=pt-br" aria-label="Copiar link de Marvel 03"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">DC 01 — Coleções de HQs da DC</span><a class="item-link" href="https://drive.google.com/drive/folders/1NGzqI6_shx59CfZYOJiJ-P5ik4puveH7" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1NGzqI6_shx59CfZYOJiJ-P5ik4puveH7</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1NGzqI6_shx59CfZYOJiJ-P5ik4puveH7" aria-label="Copiar link de DC 01"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+        <article class="item"><div class="item-info"><span class="item-name">DC 02 — Outras séries e fases da DC</span><a class="item-link" href="https://drive.google.com/drive/folders/1-9bSxiCfavMPf9g0wzSDFVkzJqS6j2nI" target="_blank" rel="noopener noreferrer">https://drive.google.com/drive/folders/1-9bSxiCfavMPf9g0wzSDFVkzJqS6j2nI</a></div><button class="copy-button" type="button" data-copy="https://drive.google.com/drive/folders/1-9bSxiCfavMPf9g0wzSDFVkzJqS6j2nI" aria-label="Copiar link de DC 02"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg><span class="copy-label">Copiar</span></button></article>
+      </div>
+    </section>
+
+    <section class="thanks" aria-labelledby="thanks-title">
+      <h2 id="thanks-title">Obrigado por fazer parte do Lumeo!</h2>
+      <p>Esperamos que este acervo acompanhe suas descobertas, seus estudos e seus momentos de leitura. Que cada página traga uma nova ideia e cada história abra um novo universo.</p>
+    </section>
+
+    <footer>LUMEO · LEIA · EVOLUA · TRANSFORME</footer>
+  </main>
+
+  <script>
+    const copyIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg>';
+
+    document.querySelectorAll(".copy-button").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const link = button.dataset.copy;
+        const label = button.querySelector(".copy-label");
+        try {
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(link);
+          } else {
+            const temporary = document.createElement("textarea");
+            temporary.value = link;
+            temporary.setAttribute("readonly", "");
+            temporary.style.position = "fixed";
+            temporary.style.opacity = "0";
+            document.body.appendChild(temporary);
+            temporary.select();
+            const copied = document.execCommand("copy");
+            temporary.remove();
+            if (!copied) throw new Error("Não foi possível copiar");
+          }
+          button.classList.add("copied");
+          button.innerHTML = '<span aria-hidden="true">✓</span><span class="copy-label">Copiado!</span>';
+          button.setAttribute("aria-label", "Link copiado");
+          window.setTimeout(() => {
+            button.classList.remove("copied");
+            button.innerHTML = copyIcon + '<span class="copy-label">Copiar</span>';
+            button.setAttribute("aria-label", "Copiar link");
+          }, 1600);
+        } catch (error) {
+          if (label) label.textContent = "Selecione o link";
+          button.title = "Seu navegador não permitiu copiar automaticamente. Selecione o endereço para copiar.";
+        }
+      });
+    });
+  </script>
+</body>
+</html>
